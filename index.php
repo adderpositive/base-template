@@ -2,6 +2,8 @@
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use Controllers\HomeController;
+use Middleware\ExampleMiddleware;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -14,7 +16,9 @@ $config['db']['pass']   = '';
 $config['db']['dbname'] = 'onemanshow';
 
 // Create app object
-$app = new \Slim\App(['settings' => $config]);
+$app = new \Slim\App([
+    'settings' => $config
+]);
 
 // DI Container
 $container = $app->getContainer();
@@ -47,38 +51,16 @@ $container['view'] = function ($container) {
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
 
-    //$basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
-    //$view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
-
     return $view;
 };
 
-class ExampleMiddleware {
-    public function __invoke($request, $response, $next) {
-        $response->getBody()->write('BEFORE');
-        $response = $next($request, $response);
-        $response->getBody()->write('AFTER');
-
-        return $response;
-    }
-}
-
+// whole app middleware
 $app->add( new ExampleMiddleware() );
 
 // Routes
-$app->get('/', function( Request $request, Response $response, array $args) {
-
-    if ( $this->has('logger') ) {
-        $this->logger->addInfo("Ticket list");
-    }
-
-    $response = $this->view->render($response, 'index.twig', [
-        'tickets' => array(),
-        'router' => $this->router
-    ]);
-
-    return $response;
-})->setName('home')->add( new ExampleMiddleware() );
+$app->get('/', HomeController::class)
+    ->setName('home')
+    ->add( new ExampleMiddleware() ); // route middleware
 
 // Start app after configuration
 $app->run();

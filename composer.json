@@ -12,5 +12,12 @@
         "slim/slim": "3.12",
         "monolog/monolog": "^1.24",
         "slim/twig-view": "^2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Controllers\\": "application/controllers/",
+            "Models\\": "application/models/",
+            "Middleware\\": "application/middlewares/"
+        }
     }
 }
