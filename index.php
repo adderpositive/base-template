@@ -3,7 +3,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use Controllers\HomeController;
-use Middleware\TrailingMiddleware;
+use Middlewares\TrailingMiddleware;
 
 require __DIR__ . '/vendor/autoload.php';
 

@@ -18,7 +18,7 @@
         "psr-4": {
             "Controllers\\": "application/controllers/",
             "Models\\": "application/models/",
-            "Middleware\\": "application/middlewares/"
+            "Middlewares\\": "application/middlewares/"
         }
     }
 }
