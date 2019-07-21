@@ -3,8 +3,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use Controllers\HomeController;
-use Middleware\ExampleMiddleware;
-
+use Middleware\TrailingMiddleware;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -16,12 +15,11 @@ $app = new \Slim\App( $config );
 require __DIR__ . '/application/configs/dependencies.php';
 
 // Register middleware
-$app->add( new ExampleMiddleware() );
+$app->add( new TrailingMiddleware() );
 
 // Register routes
 $app->get('/', HomeController::class)
-    ->setName('home')
-    ->add( new ExampleMiddleware() ); // Route middleware
+    ->setName('home');
 
 // Start app after configuration
 $app->run();

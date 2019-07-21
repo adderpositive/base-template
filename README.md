@@ -5,7 +5,7 @@ A template for bulding small-medius sites based on Slim Framework with Twig temp
 
 ## TODO
 - [ ] base MVC concept
-- [ ] trailing in router patterns
+- [x] trailing in router patterns
 - [ ] i18n
 - [ ] db migration
 - [x] .env config or something like that
