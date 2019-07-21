@@ -7,11 +7,11 @@ if (file_exists(__DIR__ . '/../../.env') ) {
     $dotenv->load();
 }
 
-return [
+$settings = [
     'settings' => [
-        'displayErrorDetails' => getenv('APP_DEBUG') === 'true' ? true : true, // set to false in production
-        'addContentLengthHeader' => false, // Allow the web server to send the content-length header
         // App Settings
+        'displayErrorDetails' => true,
+        'addContentLengthHeader' => true,
         'app' => [
             'name' => getenv('APP_NAME'),
             'url' => getenv('APP_URL'),
@@ -33,15 +33,30 @@ return [
         // Database settings
         'database' => [
             'driver' => getenv('DB_CONNECTION'),
-            'host' => getenv('DB_HOST'),
-            'databaseName' => getenv('DB_DATABASE'),
-            'username' => getenv('DB_USERNAME'),
-            'password' => getenv('DB_PASSWORD'),
             'port' => getenv('DB_PORT'),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
         ],
         'cors' => null !== getenv('CORS_ALLOWED_ORIGINS') ? getenv('CORS_ALLOWED_ORIGINS') : '*'
-    ],
+    ]
 ];
+
+// Only production enviroment
+if( getenv('APP_ENV') === 'PROD' ) {
+    $settings['settings']['displayErrorDetails'] = false;
+    $settings['settings']['addContentLengthHeader'] = false;
+    $settings['settings']['renderer']['cache'] = true;
+    $settings['settings']['renderer']['debug'] = false;
+}
+
+// App version according to enviroment
+$settings['settings']['app']['version'] = getenv('APP_ENV') === 'PROD' ? getenv('APP_VERSION') : time();
+
+// Database settings according to enviroment
+$settings['settings']['database']['host']   = getenv('DB_' . getenv('APP_ENV') . '_HOST');
+$settings['settings']['database']['username']   =  getenv('DB_' . getenv('APP_ENV') . '_USERNAME');
+$settings['settings']['database']['password']   =  getenv('DB_' . getenv('APP_ENV') . '_PASSWORD');
+$settings['settings']['database']['databaseName'] =  getenv('DB_' . getenv('APP_ENV') . '_DATABASE');
+
+return $settings;
