@@ -57,6 +57,6 @@ $settings['settings']['app']['version'] = getenv('APP_ENV') === 'PROD' ? getenv(
 $settings['settings']['database']['host']   = getenv('DB_' . getenv('APP_ENV') . '_HOST');
 $settings['settings']['database']['username']   =  getenv('DB_' . getenv('APP_ENV') . '_USERNAME');
 $settings['settings']['database']['password']   =  getenv('DB_' . getenv('APP_ENV') . '_PASSWORD');
-$settings['settings']['database']['databaseName'] =  getenv('DB_' . getenv('APP_ENV') . '_DATABASE');
+$settings['settings']['database']['database'] =  getenv('DB_' . getenv('APP_ENV') . '_DATABASE');
 
 return $settings;

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager;
+
 // DI Container configuration
 $container = $app->getContainer();
 
@@ -18,15 +20,12 @@ $container['logger'] = function($c) {
 $container['db'] = function ($c) {
     $settings = $c->get('settings')['database'];
 
-    $pdo = new PDO('mysql:host=' . $settings['host'] . ';dbname=' . $settings['databaseName'],
-        $settings['username'],
-        $settings['password']
-    );
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    $pdo->exec("SET NAMES {$settings['charset']} COLLATE {$settings['collation']};");
+    $capsule = new Manager();
+    $capsule->addConnection( $settings );
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
 
-    return $pdo;
+    return $capsule;
 };
 
 // Twig middleware
