@@ -10,6 +10,9 @@ A template for bulding small-medius sites based on Slim Framework with Twig temp
 - [x] db migration
 - [x] .env config or something like that
 - [ ] csrf protection
+- [ ] add posibility to add global container's settings
+- [ ] /assets
+- [ ] make default structure of views
 
 
 ## Migrations & seeds
